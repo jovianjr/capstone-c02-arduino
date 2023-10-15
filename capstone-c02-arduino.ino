@@ -15,8 +15,8 @@
 #define PIN_MQ135 (34)
 
 // def const wifi
-const String ssid = "Pocky";
-const String password = "empekempek123";
+const String ssid = "wifi_name";
+const String password = "wifi_password";
 const String IP = "192.168.1.97";
 const String subnetmask = "255.255.255.0";
 const String ipgateway = "192.168.1.1";

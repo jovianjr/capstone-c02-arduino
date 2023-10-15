@@ -91,12 +91,12 @@ void CheckTreshold()
     {
         digitalWrite(PIN_WATER_PUMP, LOW);
 
-        if (AMMONIUM_LEVEL >= THRESHOLD_AMMONIUM_GREEN)
+        if (AMMONIUM_LEVEL > THRESHOLD_AMMONIUM_YELLOW)
         {
             digitalWrite(PIN_LED_RED, HIGH);
             digitalWrite(PIN_FAN, HIGH);
         }
-        else if (AMMONIUM_LEVEL >= THRESHOLD_AMMONIUM_YELLOW)
+        else if (AMMONIUM_LEVEL > THRESHOLD_AMMONIUM_GREEN)
         {
             digitalWrite(PIN_LED_YELLOW, HIGH);
             digitalWrite(PIN_FAN, HIGH);

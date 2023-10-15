@@ -5,11 +5,11 @@
 #include <PubSubClient.h>
 
 // def pin
-#define PIN_FAN (5)
-#define PIN_WATER_PUMP (23)
-#define PIN_LED_GREEN (27)
+#define PIN_FAN (18)
+#define PIN_WATER_PUMP (19)
+#define PIN_LED_GREEN (25)
 #define PIN_LED_YELLOW (26)
-#define PIN_LED_RED (25)
+#define PIN_LED_RED (27)
 
 #define PIN_MQ2 (35)
 #define PIN_MQ135 (34)
@@ -49,15 +49,15 @@ void setup()
     pinMode(PIN_LED_YELLOW, OUTPUT);
     pinMode(PIN_LED_RED, OUTPUT);
 
-    wifimqtt.begin();
-    mqsensor.begin();
-
     // set all to low
     digitalWrite(PIN_LED_GREEN, LOW);
     digitalWrite(PIN_LED_YELLOW, LOW);
     digitalWrite(PIN_LED_RED, LOW);
     digitalWrite(PIN_FAN, LOW);
     digitalWrite(PIN_WATER_PUMP, LOW);
+
+    wifimqtt.begin();
+    mqsensor.begin();
 }
 
 void loop()
@@ -81,23 +81,30 @@ void loop()
 
 void CheckTreshold()
 {
-    if (SMOKE_LEVEL < THRESHOLD_SMOKE)
+    if (SMOKE_LEVEL >= THRESHOLD_SMOKE)
     {
-        if (AMMONIUM_LEVEL < THRESHOLD_AMMONIUM_GREEN)
-        {
-            digitalWrite(PIN_LED_GREEN, HIGH);
-        }
-        else if (AMMONIUM_LEVEL < THRESHOLD_AMMONIUM_YELLOW)
-        {
-            digitalWrite(PIN_LED_YELLOW, HIGH);
-        }
-        else
-        {
-            digitalWrite(PIN_LED_RED, HIGH);
-        }
+        digitalWrite(PIN_LED_RED, HIGH);
+        digitalWrite(PIN_FAN, HIGH);
+        digitalWrite(PIN_WATER_PUMP, HIGH);
     }
     else
     {
-        digitalWrite(PIN_LED_RED, HIGH);
+        digitalWrite(PIN_WATER_PUMP, LOW);
+
+        if (AMMONIUM_LEVEL >= THRESHOLD_AMMONIUM_GREEN)
+        {
+            digitalWrite(PIN_LED_RED, HIGH);
+            digitalWrite(PIN_FAN, HIGH);
+        }
+        else if (AMMONIUM_LEVEL >= THRESHOLD_AMMONIUM_YELLOW)
+        {
+            digitalWrite(PIN_LED_YELLOW, HIGH);
+            digitalWrite(PIN_FAN, HIGH);
+        }
+        else
+        {
+            digitalWrite(PIN_LED_GREEN, HIGH);
+            digitalWrite(PIN_FAN, LOW);
+        }
     }
 }

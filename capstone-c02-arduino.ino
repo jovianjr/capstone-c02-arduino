@@ -94,16 +94,22 @@ void CheckTreshold()
         if (AMMONIUM_LEVEL > THRESHOLD_AMMONIUM_YELLOW)
         {
             digitalWrite(PIN_LED_RED, HIGH);
+            digitalWrite(PIN_LED_YELLOW, LOW);
+            digitalWrite(PIN_LED_GREEN, LOW);
             digitalWrite(PIN_FAN, HIGH);
         }
         else if (AMMONIUM_LEVEL > THRESHOLD_AMMONIUM_GREEN)
         {
             digitalWrite(PIN_LED_YELLOW, HIGH);
+            digitalWrite(PIN_LED_RED, LOW);
+            digitalWrite(PIN_LED_GREEN, LOW);
             digitalWrite(PIN_FAN, HIGH);
         }
         else
         {
             digitalWrite(PIN_LED_GREEN, HIGH);
+            digitalWrite(PIN_LED_YELLOW, LOW);
+            digitalWrite(PIN_LED_RED, LOW);
             digitalWrite(PIN_FAN, LOW);
         }
     }

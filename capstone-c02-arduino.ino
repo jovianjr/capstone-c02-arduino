@@ -4,6 +4,11 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 
+#define ON HIGH
+#define OFF LOW
+#define ON_RELAY LOW
+#define OFF_RELAY HIGH
+
 // def pin
 #define PIN_FAN (18)
 #define PIN_WATER_PUMP (19)
@@ -49,20 +54,20 @@ void setup()
     pinMode(PIN_LED_YELLOW, OUTPUT);
     pinMode(PIN_LED_RED, OUTPUT);
 
-    // set all to low
-    digitalWrite(PIN_LED_GREEN, LOW);
-    digitalWrite(PIN_LED_YELLOW, LOW);
-    digitalWrite(PIN_LED_RED, LOW);
-    digitalWrite(PIN_FAN, LOW);
-    digitalWrite(PIN_WATER_PUMP, LOW);
+    // set all to off
+    digitalWrite(PIN_LED_GREEN, OFF);
+    digitalWrite(PIN_LED_YELLOW, OFF);
+    digitalWrite(PIN_LED_RED, OFF);
+    digitalWrite(PIN_FAN, OFF_RELAY);
+    digitalWrite(PIN_WATER_PUMP, OFF_RELAY);
 
-    wifimqtt.begin();
+    // wifimqtt.begin();
     mqsensor.begin();
 }
 
 void loop()
 {
-    wifimqtt.mqttconnect();
+    // wifimqtt.mqttconnect();
 
     SMOKE_LEVEL = mqsensor.GetSmokeLevel();
     AMMONIUM_LEVEL = mqsensor.GetAmmoniumLevel();
@@ -83,34 +88,34 @@ void CheckTreshold()
 {
     if (SMOKE_LEVEL >= THRESHOLD_SMOKE)
     {
-        digitalWrite(PIN_LED_RED, HIGH);
-        digitalWrite(PIN_FAN, HIGH);
-        digitalWrite(PIN_WATER_PUMP, HIGH);
+        digitalWrite(PIN_LED_RED, ON);
+        digitalWrite(PIN_FAN, ON_RELAY);
+        digitalWrite(PIN_WATER_PUMP, ON_RELAY);
     }
     else
     {
-        digitalWrite(PIN_WATER_PUMP, LOW);
+        digitalWrite(PIN_WATER_PUMP, OFF_RELAY);
 
         if (AMMONIUM_LEVEL > THRESHOLD_AMMONIUM_YELLOW)
         {
-            digitalWrite(PIN_LED_RED, HIGH);
-            digitalWrite(PIN_LED_YELLOW, LOW);
-            digitalWrite(PIN_LED_GREEN, LOW);
-            digitalWrite(PIN_FAN, HIGH);
+            digitalWrite(PIN_LED_RED, ON);
+            digitalWrite(PIN_LED_YELLOW, OFF);
+            digitalWrite(PIN_LED_GREEN, OFF);
+            digitalWrite(PIN_FAN, ON_RELAY);
         }
         else if (AMMONIUM_LEVEL > THRESHOLD_AMMONIUM_GREEN)
         {
-            digitalWrite(PIN_LED_YELLOW, HIGH);
-            digitalWrite(PIN_LED_RED, LOW);
-            digitalWrite(PIN_LED_GREEN, LOW);
-            digitalWrite(PIN_FAN, HIGH);
+            digitalWrite(PIN_LED_YELLOW, ON);
+            digitalWrite(PIN_LED_RED, OFF);
+            digitalWrite(PIN_LED_GREEN, OFF);
+            digitalWrite(PIN_FAN, ON_RELAY);
         }
         else
         {
-            digitalWrite(PIN_LED_GREEN, HIGH);
-            digitalWrite(PIN_LED_YELLOW, LOW);
-            digitalWrite(PIN_LED_RED, LOW);
-            digitalWrite(PIN_FAN, LOW);
+            digitalWrite(PIN_LED_GREEN, ON);
+            digitalWrite(PIN_LED_YELLOW, OFF);
+            digitalWrite(PIN_LED_RED, OFF);
+            digitalWrite(PIN_FAN, OFF_RELAY);
         }
     }
 }
